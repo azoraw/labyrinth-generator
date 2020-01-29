@@ -11,7 +11,7 @@ import static com.azoraw.game.MyGdxGame.GRID_WIDTH;
 public class Grid {
 
     @Getter
-    private Cell[][] grid = new Cell[GRID_HEIGHT][GRID_WIDTH];
+    private Cell[][] grid = new Cell[GRID_WIDTH][GRID_HEIGHT];
     private Stack<Cell> stack = new Stack<>();
     private final Random random = new Random();
 
@@ -82,7 +82,7 @@ public class Grid {
 
     private void initGrid() {
         for (int x = 0; x < GRID_WIDTH; x++) {
-            for (int y = 0; y < GRID_WIDTH; y++) {
+            for (int y = 0; y < GRID_HEIGHT; y++) {
                 grid[x][y] = new Cell(x, y);
             }
         }
