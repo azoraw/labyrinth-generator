@@ -28,10 +28,10 @@ public class Cell {
 
     public Direction getDirection(Cell cell) {
         if (this.x < cell.getX()) {
-            return Direction.LEFT;
+            return Direction.RIGHT;
         }
         if (this.x > cell.getX()) {
-            return Direction.RIGHT;
+            return Direction.LEFT;
         }
         if (this.y < cell.getY()) {
             return Direction.DOWN;
@@ -44,5 +44,30 @@ public class Cell {
 
     public void removeWall(Direction wall) {
         walls.remove(wall);
+    }
+
+    @Override
+    public String toString() {
+        String result = "";
+        if (walls.contains(Direction.LEFT)) {
+            result += "|";
+        } else {
+            result += " ";
+        }
+        if (walls.contains(Direction.UP) && walls.contains(Direction.DOWN)) {
+            result += "=";
+        } else if (walls.contains(Direction.UP)) {
+            result += "-";
+        } else if (walls.contains(Direction.DOWN)) {
+            result += "_";
+        } else {
+            result += " ";
+        }
+        if (walls.contains(Direction.RIGHT)) {
+            result += "|";
+        } else {
+            result +=" ";
+        }
+        return result;
     }
 }

@@ -50,11 +50,15 @@ project(":desktop") {
 
 project(":core") {
     apply plugin: "java-library"
-
+    apply plugin:  'groovy'
 
     dependencies {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         compileOnly 'org.projectlombok:lombok:1.18.10'
         annotationProcessor 'org.projectlombok:lombok:1.18.10'
+        testCompile "org.codehaus.groovy:groovy-all:2.4.15"
+        testCompile "org.spockframework:spock-core:1.1-groovy-2.4"
+        testRuntime "net.bytebuddy:byte-buddy:1.6.5"          // allows mocking of classes (in addition to interfaces)
+        testRuntime "org.objenesis:objenesis:2.5.1"           // allows mocking of classes without default constructor (together with CGLIB)
     }
 }

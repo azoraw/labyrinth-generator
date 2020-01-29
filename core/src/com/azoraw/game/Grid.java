@@ -27,6 +27,12 @@ public class Grid {
                 stack.push(chosenNeighbour);
             }
         }
+        for (int y = 0; y < GRID_HEIGHT; y++) {
+            for (int x = 0; x < GRID_WIDTH; x++) {
+                System.out.print(grid[x][y]);
+            }
+            System.out.println("");
+        }
     }
 
     private static void removeWalls(Cell head, Cell chosenNeighbour) {

@@ -14,14 +14,13 @@ public class MyGdxGame extends ApplicationAdapter {
     private static final int SECOND = 1000000000;
     private static final int RECTANGLE_WIDTH = 50;
     private static final int RECTANGLE_HEIGHT = 50;
-    public static final int GRID_HEIGHT = 9;
-    public static final int GRID_WIDTH = 9;
+    public static final int GRID_HEIGHT = 10;
+    public static final int GRID_WIDTH = 10;
 
     private long lastTime = 0L;
     private Array<Rectangle> rectangles;
     private Texture redSquare;
     private SpriteBatch batch;
-
 
     int currentWidth = 5;
     int currentHeight = 5;
