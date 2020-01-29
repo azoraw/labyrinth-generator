@@ -5,21 +5,19 @@ import lombok.Setter;
 
 import java.util.EnumSet;
 
+@Getter
 public class Cell {
 
-    @Getter
     private final int x;
-    @Getter
     private final int y;
 
-    @Getter
+    private EnumSet<Direction> walls = EnumSet.allOf(Direction.class);
+
     @Setter
     private boolean current;
-    @Getter
     @Setter
     private boolean visited;
 
-    private EnumSet<Direction> walls = EnumSet.allOf(Direction.class);
 
     public Cell(int x, int y) {
         this.x = x;

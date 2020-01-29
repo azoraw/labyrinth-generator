@@ -5,21 +5,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.TimeUtils;
 
-import java.awt.Rectangle;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MyGdxGame extends ApplicationAdapter {
     private static final int SECOND = 1000000000;
     private static final int RECTANGLE_WIDTH = 50;
     private static final int RECTANGLE_HEIGHT = 50;
-    public static final int GRID_HEIGHT = 5;
-    public static final int GRID_WIDTH = 5;
+    public static final int GRID_HEIGHT = 7;
+    public static final int GRID_WIDTH = 7;
 
     private long lastTime = 0L;
-    private Array<Rectangle> rectangles;
     private Texture redSquare;
+    Map<Direction, Texture> wallTextures;
+    Cell[][] cells;
     private SpriteBatch batch;
 
     int currentWidth = 5;
@@ -27,19 +27,37 @@ public class MyGdxGame extends ApplicationAdapter {
 
     @Override
     public void create() {
-        redSquare = new Texture(Gdx.files.internal("50x50Red.png"));
+        createTextures();
+        Grid grid = new Grid();
+        grid.generateGrid();
+        cells = grid.getGrid();
+
         batch = new SpriteBatch();
-        rectangles = new Array<>();
-        createGrid();
+        createGrid(cells);
     }
 
-    private void createGrid() {
+    private void createTextures() {
+        redSquare = new Texture(Gdx.files.internal("Red.png"));
+        wallTextures = new HashMap<>();
+        wallTextures.put(Direction.LEFT, new Texture(Gdx.files.internal("LEFT.png")));
+        wallTextures.put(Direction.RIGHT, new Texture(Gdx.files.internal("RIGHT.png")));
+        wallTextures.put(Direction.DOWN, new Texture(Gdx.files.internal("DOWN.png")));
+        wallTextures.put(Direction.UP, new Texture(Gdx.files.internal("UP.png")));
+    }
+
+    private void createGrid(Cell[][] cells) {
         batch.begin();
         for (int x = 0; x < GRID_WIDTH; x++) {
             for (int y = 0; y < GRID_HEIGHT; y++) {
-                batch.draw(redSquare, x * RECTANGLE_WIDTH , y * RECTANGLE_HEIGHT);
+                batch.draw(redSquare, x * RECTANGLE_WIDTH, y * RECTANGLE_HEIGHT);
+                Cell cell = cells[x][GRID_HEIGHT - y-1];
+                for (Direction wall : cell.getWalls()) {
+                    batch.draw(wallTextures.get(wall), x * RECTANGLE_WIDTH, y * RECTANGLE_HEIGHT);
+                }
+
             }
         }
+
         batch.end();
     }
 
@@ -48,26 +66,9 @@ public class MyGdxGame extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        createGrid();
+        createGrid(cells);
 
     }
-
-    private void addRectangle() {
-        Rectangle rect = createRectangle();
-        rectangles.add(rect);
-        lastTime = TimeUtils.nanoTime();
-        currentWidth += RECTANGLE_WIDTH;
-    }
-
-    private Rectangle createRectangle() {
-        Rectangle rect = new Rectangle();
-        rect.x = currentWidth;
-        rect.y = currentHeight;
-        rect.width = RECTANGLE_WIDTH;
-        rect.height = RECTANGLE_HEIGHT;
-        return rect;
-    }
-
 
     @Override
     public void dispose() {

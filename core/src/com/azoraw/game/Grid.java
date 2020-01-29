@@ -1,17 +1,21 @@
 package com.azoraw.game;
 
+import lombok.Getter;
+
 import java.util.*;
 
 import static com.azoraw.game.MyGdxGame.GRID_HEIGHT;
 import static com.azoraw.game.MyGdxGame.GRID_WIDTH;
 
+
 public class Grid {
 
-    private static Cell[][] grid = new Cell[GRID_HEIGHT][GRID_WIDTH];
-    private static Stack<Cell> stack = new Stack<>();
-    private static final Random random = new Random();
+    @Getter
+    private Cell[][] grid = new Cell[GRID_HEIGHT][GRID_WIDTH];
+    private Stack<Cell> stack = new Stack<>();
+    private final Random random = new Random();
 
-    public static void main(String[] args) {
+    public void generateGrid() {
         initGrid();
         initBacktracker();
 
@@ -35,17 +39,17 @@ public class Grid {
         }
     }
 
-    private static void removeWalls(Cell head, Cell chosenNeighbour) {
+    private void removeWalls(Cell head, Cell chosenNeighbour) {
         Direction direction = head.getDirection(chosenNeighbour);
         head.removeWall(direction);
         chosenNeighbour.removeWall(direction.getOpposite());
     }
 
-    private static Cell getRandomNeighbour(List<Cell> neighbours) {
+    private Cell getRandomNeighbour(List<Cell> neighbours) {
         return neighbours.get(random.nextInt(neighbours.size()));
     }
 
-    private static List<Cell> getNotVisitedNeighbours(Cell cell) {
+    private List<Cell> getNotVisitedNeighbours(Cell cell) {
         int x = cell.getX();
         int y = cell.getY();
         List<Cell> neighbours = new ArrayList<>();
@@ -57,7 +61,7 @@ public class Grid {
         return neighbours;
     }
 
-    private static void addNeighbour(int x, int y, List<Cell> neighbours) {
+    private void addNeighbour(int x, int y, List<Cell> neighbours) {
         if (isInsideGrid(x, y)) {
             Cell neighbour = grid[x][y];
             if (!neighbour.isVisited()) {
@@ -66,17 +70,17 @@ public class Grid {
         }
     }
 
-    private static boolean isInsideGrid(int x, int y) {
+    private boolean isInsideGrid(int x, int y) {
         return x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT;
     }
 
-    private static void initBacktracker() {
+    private void initBacktracker() {
         Cell initCell = grid[0][0];
         initCell.setVisited(true);
         stack.push(initCell);
     }
 
-    private static void initGrid() {
+    private void initGrid() {
         for (int x = 0; x < GRID_WIDTH; x++) {
             for (int y = 0; y < GRID_WIDTH; y++) {
                 grid[x][y] = new Cell(x, y);
