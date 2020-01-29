@@ -8,14 +8,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
-import java.awt.*;
+import java.awt.Rectangle;
 
 public class MyGdxGame extends ApplicationAdapter {
     private static final int SECOND = 1000000000;
     private static final int RECTANGLE_WIDTH = 50;
     private static final int RECTANGLE_HEIGHT = 50;
-    public static final int GRID_HEIGHT = 10;
-    public static final int GRID_WIDTH = 10;
+    public static final int GRID_HEIGHT = 5;
+    public static final int GRID_WIDTH = 5;
 
     private long lastTime = 0L;
     private Array<Rectangle> rectangles;
