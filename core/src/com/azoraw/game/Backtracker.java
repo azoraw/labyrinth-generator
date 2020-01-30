@@ -7,37 +7,38 @@ import java.util.*;
 import static com.azoraw.game.MyGdxGame.GRID_HEIGHT;
 import static com.azoraw.game.MyGdxGame.GRID_WIDTH;
 
-
-public class Grid {
+public class Backtracker {
 
     @Getter
-    private Cell[][] grid = new Cell[GRID_WIDTH][GRID_HEIGHT];
+    private Cell[][] cells;
     private Stack<Cell> stack = new Stack<>();
     private final Random random = new Random();
 
-    public void generateGrid() {
+    public Backtracker(Cell[][] cells) {
+        this.cells = cells;
         initGrid();
         initBacktracker();
+    }
 
-        while (!stack.isEmpty()) {
+    public void nextStep() {
+        if (!stack.isEmpty()) {
             Cell head = stack.pop();
+            head.setOnStack(false);
             head.setCurrent(true);
             List<Cell> neighbours = getNotVisitedNeighbours(head);
             if (!neighbours.isEmpty()) {
                 stack.push(head);
+                head.setOnStack(true);
                 Cell chosenNeighbour = getRandomNeighbour(neighbours);
                 removeWalls(head, chosenNeighbour);
                 chosenNeighbour.setVisited(true);
                 stack.push(chosenNeighbour);
+                chosenNeighbour.setOnStack(true);
             }
-        }
-        for (int y = 0; y < GRID_HEIGHT; y++) {
-            for (int x = 0; x < GRID_WIDTH; x++) {
-                System.out.print(grid[x][y]);
-            }
-            System.out.println("");
         }
     }
+
+
 
     private void removeWalls(Cell head, Cell chosenNeighbour) {
         Direction direction = head.getDirection(chosenNeighbour);
@@ -63,7 +64,7 @@ public class Grid {
 
     private void addNeighbour(int x, int y, List<Cell> neighbours) {
         if (isInsideGrid(x, y)) {
-            Cell neighbour = grid[x][y];
+            Cell neighbour = cells[x][y];
             if (!neighbour.isVisited()) {
                 neighbours.add(neighbour);
             }
@@ -75,7 +76,7 @@ public class Grid {
     }
 
     private void initBacktracker() {
-        Cell initCell = grid[0][0];
+        Cell initCell = cells[0][0];
         initCell.setVisited(true);
         stack.push(initCell);
     }
@@ -83,7 +84,7 @@ public class Grid {
     private void initGrid() {
         for (int x = 0; x < GRID_WIDTH; x++) {
             for (int y = 0; y < GRID_HEIGHT; y++) {
-                grid[x][y] = new Cell(x, y);
+                cells[x][y] = new Cell(x, y);
             }
         }
     }

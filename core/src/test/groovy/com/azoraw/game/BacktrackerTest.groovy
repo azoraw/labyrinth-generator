@@ -3,7 +3,7 @@ package com.azoraw.game
 import spock.lang.Specification
 import spock.lang.Unroll
 
-class GridTest extends Specification {
+class BacktrackerTest extends Specification {
 
     @Unroll
     def "should remove walls"() {

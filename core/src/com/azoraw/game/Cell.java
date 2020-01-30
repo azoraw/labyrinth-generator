@@ -17,6 +17,8 @@ public class Cell {
     private boolean current;
     @Setter
     private boolean visited;
+    @Setter
+    private boolean isOnStack;
 
 
     public Cell(int x, int y) {
@@ -42,30 +44,5 @@ public class Cell {
 
     public void removeWall(Direction wall) {
         walls.remove(wall);
-    }
-
-    @Override
-    public String toString() {
-        String result = "";
-        if (walls.contains(Direction.LEFT)) {
-            result += "|";
-        } else {
-            result += " ";
-        }
-        if (walls.contains(Direction.UP) && walls.contains(Direction.DOWN)) {
-            result += "=";
-        } else if (walls.contains(Direction.UP)) {
-            result += "-";
-        } else if (walls.contains(Direction.DOWN)) {
-            result += "_";
-        } else {
-            result += " ";
-        }
-        if (walls.contains(Direction.RIGHT)) {
-            result += "|";
-        } else {
-            result +=" ";
-        }
-        return result;
     }
 }

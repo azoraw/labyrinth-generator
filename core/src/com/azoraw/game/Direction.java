@@ -14,7 +14,6 @@ public enum Direction {
         RIGHT.opposite = LEFT;
         DOWN.opposite = UP;
         LEFT.opposite = RIGHT;
-
     }
 
     private Direction opposite;
