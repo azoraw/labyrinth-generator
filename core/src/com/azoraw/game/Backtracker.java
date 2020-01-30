@@ -4,10 +4,13 @@ import lombok.Getter;
 
 import java.util.*;
 
-import static com.azoraw.game.MyGdxGame.GRID_HEIGHT;
-import static com.azoraw.game.MyGdxGame.GRID_WIDTH;
+import static com.azoraw.game.LabyrinthGenerator.GRID_HEIGHT;
+import static com.azoraw.game.LabyrinthGenerator.GRID_WIDTH;
 
 public class Backtracker {
+
+    private static final int INIT_POSITION_X = 0;
+    private static final int INIT_POSITION_Y = 0;
 
     @Getter
     private Cell[][] cells;
@@ -22,22 +25,37 @@ public class Backtracker {
 
     public void nextStep() {
         if (!stack.isEmpty()) {
-            Cell head = stack.pop();
-            head.setOnStack(false);
-            head.setCurrent(true);
+            Cell head = popFromStack();
             List<Cell> neighbours = getNotVisitedNeighbours(head);
-            if (!neighbours.isEmpty()) {
-                stack.push(head);
-                head.setOnStack(true);
-                Cell chosenNeighbour = getRandomNeighbour(neighbours);
-                removeWalls(head, chosenNeighbour);
-                chosenNeighbour.setVisited(true);
-                stack.push(chosenNeighbour);
-                chosenNeighbour.setOnStack(true);
+            if (hasNeighbour(neighbours)) {
+                goToNeighbour(head, neighbours);
             }
         }
     }
 
+    private boolean hasNeighbour(List<Cell> neighbours) {
+        return !neighbours.isEmpty();
+    }
+
+    private void goToNeighbour(Cell head, List<Cell> neighbours) {
+        pushToStack(head);
+        Cell chosenNeighbour = getRandomNeighbour(neighbours);
+        removeWalls(head, chosenNeighbour);
+        chosenNeighbour.setVisited(true);
+        pushToStack(chosenNeighbour);
+    }
+
+    private void pushToStack(Cell cell) {
+        stack.push(cell);
+        cell.setOnStack(true);
+    }
+
+    private Cell popFromStack() {
+        Cell cell = stack.pop();
+        cell.setOnStack(false);
+        cell.setCurrent(true);
+        return cell;
+    }
 
 
     private void removeWalls(Cell head, Cell chosenNeighbour) {
@@ -76,7 +94,7 @@ public class Backtracker {
     }
 
     private void initBacktracker() {
-        Cell initCell = cells[0][0];
+        Cell initCell = cells[INIT_POSITION_X][INIT_POSITION_Y];
         initCell.setVisited(true);
         stack.push(initCell);
     }

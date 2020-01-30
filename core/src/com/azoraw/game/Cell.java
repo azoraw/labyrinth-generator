@@ -20,23 +20,22 @@ public class Cell {
     @Setter
     private boolean isOnStack;
 
-
     public Cell(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
     public Direction getDirection(Cell cell) {
-        if (this.x < cell.getX()) {
+        if (x < cell.getX()) {
             return Direction.RIGHT;
         }
-        if (this.x > cell.getX()) {
+        if (x > cell.getX()) {
             return Direction.LEFT;
         }
-        if (this.y < cell.getY()) {
+        if (y < cell.getY()) {
             return Direction.DOWN;
         }
-        if (this.y > cell.getY()) {
+        if (y > cell.getY()) {
             return Direction.UP;
         }
         return null;
