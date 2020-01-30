@@ -3,10 +3,10 @@ package com.azoraw.game
 import spock.lang.Specification
 import spock.lang.Unroll
 
-class BacktrackerTest extends Specification {
+class CellTest extends Specification {
 
     @Unroll
-    def "should remove walls"() {
+    def "should get direction between head cell and neighbour cell"() {
         given:
         def headCell = new Cell(xHead, yHead)
         def neighbourCell = new Cell(xNeighbour, yNeighbour)
