@@ -18,7 +18,7 @@ public class Cell {
     @Setter
     private boolean visited;
     @Setter
-    private boolean isOnStack;
+    private boolean onStack;
 
     public Cell(int x, int y) {
         this.x = x;
