@@ -79,8 +79,8 @@ public class LabyrinthGenerator extends ApplicationAdapter {
     }
 
     private void drawWalls(int x, int y, Cell cell) {
-        for (Direction wall : cell.getWalls()) {
-            batch.draw(wallTextures.get(wall), x * CELL_WIDTH, y * CELL_HEIGHT);
+        for (Direction direction : cell.getWalls()) {
+            batch.draw(wallTextures.get(direction), x * CELL_WIDTH, y * CELL_HEIGHT);
         }
     }
 
