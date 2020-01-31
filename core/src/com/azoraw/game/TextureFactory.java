@@ -30,6 +30,7 @@ public class TextureFactory {
         backgroundTextures.put(Color.RED, new Texture(createScaledCell(Gdx.files.internal("Red.png"))));
         backgroundTextures.put(Color.GREEN, new Texture(createScaledCell(Gdx.files.internal("Green.png"))));
         backgroundTextures.put(Color.BLUE, new Texture(createScaledCell(Gdx.files.internal("Blue.png"))));
+        backgroundTextures.put(Color.WHITE, new Texture(createScaledCell(Gdx.files.internal("White.png"))));
 
         return backgroundTextures;
     }

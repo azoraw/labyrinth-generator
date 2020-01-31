@@ -12,15 +12,15 @@ public class LabyrinthGenerator extends ApplicationAdapter {
 
     static final int CELL_WIDTH = 10;
     static final int CELL_HEIGHT = 10;
-    static final int GRID_HEIGHT = 40;
     static final int GRID_WIDTH = 40;
-    static final long SLEEP_MILLISECOND = 10;
-
+    static final int GRID_HEIGHT = 40;
+    static final long SLEEP_MILLISECOND = 1;
 
     private Map<Direction, Texture> wallTextures;
     private Map<Color, Texture> backgroundTextures;
     private Cell[][] cells;
     private SpriteBatch batch;
+    RandomFinder randomFinder;
 
     @Override
     public void create() {
@@ -28,12 +28,22 @@ public class LabyrinthGenerator extends ApplicationAdapter {
         createBacktracker();
         batch = new SpriteBatch();
         drawGrid();
+        randomFinder = new RandomFinder(cells);
+        randomFinder.start();
     }
 
     @Override
     public void render() {
         clearScreen();
         drawGrid();
+        drawRandomFinder();
+    }
+
+    private void drawRandomFinder() {
+        Cell currentCell = randomFinder.getCurrentCell();
+        batch.begin();
+        batch.draw(backgroundTextures.get(Color.WHITE), currentCell.getX() * CELL_WIDTH, (GRID_HEIGHT - currentCell.getY() - 1) * CELL_HEIGHT);
+        batch.end();
     }
 
     private void createBacktracker() {
