@@ -4,10 +4,9 @@ import lombok.Getter;
 
 import java.util.*;
 
-import static com.azoraw.game.LabyrinthGenerator.GRID_HEIGHT;
-import static com.azoraw.game.LabyrinthGenerator.GRID_WIDTH;
+import static com.azoraw.game.LabyrinthGenerator.*;
 
-public class Backtracker {
+public class Backtracker extends Thread {
 
     private static final int INIT_POSITION_X = 0;
     private static final int INIT_POSITION_Y = 0;
@@ -23,13 +22,27 @@ public class Backtracker {
         initBacktracker();
     }
 
-    public void nextStep() {
-        if (!stack.isEmpty()) {
-            Cell head = popFromStack();
-            List<Cell> neighbours = getNotVisitedNeighbours(head);
-            if (hasNeighbour(neighbours)) {
-                goToNeighbour(head, neighbours);
-            }
+    @Override
+    public void run() {
+        while (!stack.isEmpty()) {
+            nextStep();
+            sleep();
+        }
+    }
+
+    private void nextStep() {
+        Cell head = popFromStack();
+        List<Cell> neighbours = getNotVisitedNeighbours(head);
+        if (hasNeighbour(neighbours)) {
+            goToNeighbour(head, neighbours);
+        }
+    }
+
+    private void sleep() {
+        try {
+            sleep(SLEEP_MILLISECOND);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

@@ -14,11 +14,12 @@ public class LabyrinthGenerator extends ApplicationAdapter {
     static final int CELL_HEIGHT = 10;
     static final int GRID_HEIGHT = 40;
     static final int GRID_WIDTH = 40;
+    static final long SLEEP_MILLISECOND = 10;
+
 
     private Map<Direction, Texture> wallTextures;
     private Map<Color, Texture> backgroundTextures;
     private Cell[][] cells;
-    private Backtracker backtracker;
     private SpriteBatch batch;
 
     @Override
@@ -32,13 +33,13 @@ public class LabyrinthGenerator extends ApplicationAdapter {
     @Override
     public void render() {
         clearScreen();
-        backtracker.nextStep();
         drawGrid();
     }
 
     private void createBacktracker() {
         cells = new Cell[GRID_WIDTH][GRID_HEIGHT];
-        backtracker = new Backtracker(cells);
+        Backtracker backtracker = new Backtracker(cells);
+        backtracker.start();
     }
 
     private void clearScreen() {
