@@ -1,7 +1,5 @@
 package com.azoraw.game;
 
-import lombok.Getter;
-
 import java.util.*;
 
 import static com.azoraw.game.LabyrinthGenerator.*;
@@ -13,7 +11,6 @@ public class Backtracker extends Thread {
     private final Stack<Cell> stack = new Stack<>();
     private final Random random = new Random();
 
-    @Getter
     private final Cell[][] cells;
 
     public Backtracker(Cell[][] cells) {
