@@ -11,11 +11,11 @@ public class Backtracker {
 
     private static final int INIT_POSITION_X = 0;
     private static final int INIT_POSITION_Y = 0;
+    private final Stack<Cell> stack = new Stack<>();
+    private final Random random = new Random();
 
     @Getter
-    private Cell[][] cells;
-    private Stack<Cell> stack = new Stack<>();
-    private final Random random = new Random();
+    private final Cell[][] cells;
 
     public Backtracker(Cell[][] cells) {
         this.cells = cells;
@@ -29,6 +29,20 @@ public class Backtracker {
             List<Cell> neighbours = getNotVisitedNeighbours(head);
             if (hasNeighbour(neighbours)) {
                 goToNeighbour(head, neighbours);
+            }
+        }
+    }
+
+    private void initBacktracker() {
+        Cell initCell = cells[INIT_POSITION_X][INIT_POSITION_Y];
+        initCell.setVisited(true);
+        stack.push(initCell);
+    }
+
+    private void initGrid() {
+        for (int x = 0; x < GRID_WIDTH; x++) {
+            for (int y = 0; y < GRID_HEIGHT; y++) {
+                cells[x][y] = new Cell(x, y);
             }
         }
     }
@@ -93,17 +107,4 @@ public class Backtracker {
         return x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT;
     }
 
-    private void initBacktracker() {
-        Cell initCell = cells[INIT_POSITION_X][INIT_POSITION_Y];
-        initCell.setVisited(true);
-        stack.push(initCell);
-    }
-
-    private void initGrid() {
-        for (int x = 0; x < GRID_WIDTH; x++) {
-            for (int y = 0; y < GRID_HEIGHT; y++) {
-                cells[x][y] = new Cell(x, y);
-            }
-        }
-    }
 }
