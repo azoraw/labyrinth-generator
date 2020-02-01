@@ -23,7 +23,7 @@ public class Backtracker extends Thread {
     public void run() {
         while (!stack.isEmpty()) {
             nextStep();
-            sleep();
+            //sleep();
         }
     }
 

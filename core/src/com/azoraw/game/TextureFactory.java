@@ -30,9 +30,19 @@ public class TextureFactory {
         backgroundTextures.put(Color.RED, new Texture(createScaledCell(Gdx.files.internal("Red.png"))));
         backgroundTextures.put(Color.GREEN, new Texture(createScaledCell(Gdx.files.internal("Green.png"))));
         backgroundTextures.put(Color.BLUE, new Texture(createScaledCell(Gdx.files.internal("Blue.png"))));
-        backgroundTextures.put(Color.WHITE, new Texture(createScaledCell(Gdx.files.internal("White.png"))));
+        backgroundTextures.put(Color.WHITE, new Texture(createScaledCell2(Gdx.files.internal("White.png"))));
 
         return backgroundTextures;
+    }
+
+    private static Pixmap createScaledCell2(FileHandle internal) {
+        Pixmap pixmap = new Pixmap(internal);
+        Pixmap scaledPixmap = new Pixmap(CELL_WIDTH, CELL_HEIGHT, pixmap.getFormat());
+        scaledPixmap.drawPixmap(pixmap,
+                2, 2, pixmap.getWidth(), pixmap.getHeight(),
+                2, 2, scaledPixmap.getWidth()/2, scaledPixmap.getHeight()/2
+        );
+        return scaledPixmap;
     }
 
     private static Pixmap createScaledCell(FileHandle file) {

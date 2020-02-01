@@ -12,15 +12,16 @@ public class LabyrinthGenerator extends ApplicationAdapter {
 
     static final int CELL_WIDTH = 10;
     static final int CELL_HEIGHT = 10;
-    static final int GRID_WIDTH = 40;
-    static final int GRID_HEIGHT = 40;
-    static final long SLEEP_MILLISECOND = 1;
+    static final int GRID_WIDTH = 20;
+    static final int GRID_HEIGHT = 20;
+    static final long SLEEP_MILLISECOND = 200;
 
     private Map<Direction, Texture> wallTextures;
     private Map<Color, Texture> backgroundTextures;
     private Cell[][] cells;
     private SpriteBatch batch;
     RandomFinder randomFinder;
+    AStar aStar;
 
     @Override
     public void create() {
@@ -29,7 +30,9 @@ public class LabyrinthGenerator extends ApplicationAdapter {
         batch = new SpriteBatch();
         drawGrid();
         randomFinder = new RandomFinder(cells);
-        randomFinder.start();
+        //randomFinder.start();
+        aStar = new AStar(cells);
+        aStar.start();
     }
 
     @Override
@@ -40,9 +43,11 @@ public class LabyrinthGenerator extends ApplicationAdapter {
     }
 
     private void drawRandomFinder() {
-        Cell currentCell = randomFinder.getCurrentCell();
+        Cell currentCell = aStar.getCurrentCell();
+        //Cell currentCell = randomFinder.getCurrentCell();
         batch.begin();
         batch.draw(backgroundTextures.get(Color.WHITE), currentCell.getX() * CELL_WIDTH, (GRID_HEIGHT - currentCell.getY() - 1) * CELL_HEIGHT);
+
         batch.end();
     }
 
