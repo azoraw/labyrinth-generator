@@ -1,5 +1,7 @@
-package com.azoraw.game;
+package com.azoraw.game.finder;
 
+import com.azoraw.game.Cell;
+import com.azoraw.game.Direction;
 import lombok.Getter;
 
 import java.util.*;
@@ -17,26 +19,34 @@ public class AStar extends Thread {
     private Cell currentCell;
     private Cell goal;
 
-    private Map<Cell, Integer> potentialCells = new HashMap();
+    private Map<Cell, Integer> potentialCells = new HashMap<>();
     private ArrayList<Cell> visitedCells = new ArrayList<>();
 
     public AStar(Cell[][] cells) {
         this.cells = cells;
         this.goal = cells[GRID_WIDTH - 1][GRID_HEIGHT - 1];
-        currentCell = cells[INIT_POSITION_X][INIT_POSITION_Y];
     }
 
     @Override
     public void run() {
         int g = 0;
+        currentCell = cells[INIT_POSITION_X][INIT_POSITION_Y];
         while (!(currentCell.getX() == goal.getX() && currentCell.getY() == goal.getY())) {
             visitedCells.add(currentCell);
             potentialCells.remove(currentCell);
-            int h = calculateDistanceHeuristic(currentCell);
-            int f = g + h;
             List<Cell> neighbours = getNeighbours(currentCell);
+            if (neighbours.size() == 2) {
+                for (Cell neighbour : neighbours) {
+                    if (!visitedCells.contains(neighbour)) {
+                        neighbour.setVisited(true);
+                        currentCell = neighbour;
+                    }
+                }
+                sleep();
+                continue;
+            }
             for (Cell neighbour : neighbours) {
-                if(!potentialCells.containsKey(neighbour) && !visitedCells.contains(neighbour)) {
+                if (!potentialCells.containsKey(neighbour) && !visitedCells.contains(neighbour)) {
                     int newG = g + 1;
                     potentialCells.put(neighbour, newG);
                 }
@@ -57,7 +67,7 @@ public class AStar extends Thread {
     }
 
     private int calculateDistanceHeuristic(Cell cell) {
-        return goal.getX()-cell.getX() + goal.getY()-cell.getY();
+        return goal.getX() - cell.getX() + goal.getY() - cell.getY();
     }
 
     private void sleep() {
@@ -101,9 +111,5 @@ public class AStar extends Thread {
 
     private boolean isInsideGrid(int x, int y) {
         return x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT;
-    }
-
-    private Cell getRandomNeighbour(List<Cell> neighbours) {
-        return neighbours.get(random.nextInt(neighbours.size()));
     }
 }

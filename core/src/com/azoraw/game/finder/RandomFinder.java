@@ -1,5 +1,7 @@
-package com.azoraw.game;
+package com.azoraw.game.finder;
 
+import com.azoraw.game.Cell;
+import com.azoraw.game.Direction;
 import lombok.Getter;
 
 import java.util.ArrayList;

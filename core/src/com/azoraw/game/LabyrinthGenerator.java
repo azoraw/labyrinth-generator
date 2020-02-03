@@ -1,5 +1,7 @@
 package com.azoraw.game;
 
+import com.azoraw.game.finder.AStar;
+import com.azoraw.game.finder.RandomFinder;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -12,9 +14,9 @@ public class LabyrinthGenerator extends ApplicationAdapter {
 
     static final int CELL_WIDTH = 10;
     static final int CELL_HEIGHT = 10;
-    static final int GRID_WIDTH = 20;
-    static final int GRID_HEIGHT = 20;
-    static final long SLEEP_MILLISECOND = 200;
+    public static final int GRID_WIDTH = 40;
+    public static final int GRID_HEIGHT = 40;
+    public static final long SLEEP_MILLISECOND = 20;
 
     private Map<Direction, Texture> wallTextures;
     private Map<Color, Texture> backgroundTextures;
