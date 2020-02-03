@@ -2,6 +2,9 @@ package com.azoraw.game;
 
 import lombok.Getter;
 
+import java.util.EnumSet;
+import java.util.Set;
+
 @Getter
 public enum Direction {
     UP,
@@ -17,4 +20,11 @@ public enum Direction {
     }
 
     private Direction opposite;
+
+    public static Set<Direction> getAllReducedBy(EnumSet<Direction> directions) {
+        Set<Direction> reversed = EnumSet.allOf(Direction.class);
+        reversed.removeAll(directions);
+
+        return reversed;
+    }
 }
