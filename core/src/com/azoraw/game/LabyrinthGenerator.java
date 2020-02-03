@@ -1,7 +1,7 @@
 package com.azoraw.game;
 
-import com.azoraw.game.finder.AStar;
-import com.azoraw.game.finder.RandomFinder;
+import com.azoraw.game.finder.AStarAlg;
+import com.azoraw.game.finder.RandomAlg;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -16,14 +16,14 @@ public class LabyrinthGenerator extends ApplicationAdapter {
     static final int CELL_HEIGHT = 10;
     public static final int GRID_WIDTH = 40;
     public static final int GRID_HEIGHT = 40;
-    public static final long SLEEP_MILLISECOND = 20;
+    public static final long SLEEP_MILLISECOND = 50;
 
     private Map<Direction, Texture> wallTextures;
     private Map<Color, Texture> backgroundTextures;
     private Cell[][] cells;
     private SpriteBatch batch;
-    RandomFinder randomFinder;
-    AStar aStar;
+    RandomAlg randomAlg;
+    AStarAlg aStarAlg;
 
     @Override
     public void create() {
@@ -31,10 +31,10 @@ public class LabyrinthGenerator extends ApplicationAdapter {
         createBacktracker();
         batch = new SpriteBatch();
         drawGrid();
-        randomFinder = new RandomFinder(cells);
+        randomAlg = new RandomAlg(cells);
         //randomFinder.start();
-        aStar = new AStar(cells);
-        aStar.start();
+        aStarAlg = new AStarAlg(cells);
+        aStarAlg.start();
     }
 
     @Override
@@ -45,7 +45,7 @@ public class LabyrinthGenerator extends ApplicationAdapter {
     }
 
     private void drawRandomFinder() {
-        Cell currentCell = aStar.getCurrentCell();
+        Cell currentCell = aStarAlg.getCurrentCell();
         //Cell currentCell = randomFinder.getCurrentCell();
         batch.begin();
         batch.draw(backgroundTextures.get(Color.WHITE), currentCell.getX() * CELL_WIDTH, (GRID_HEIGHT - currentCell.getY() - 1) * CELL_HEIGHT);

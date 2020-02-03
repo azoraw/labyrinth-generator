@@ -2,44 +2,20 @@ package com.azoraw.game.finder;
 
 import com.azoraw.game.Cell;
 import com.azoraw.game.Direction;
-import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Random;
 
 import static com.azoraw.game.LabyrinthGenerator.*;
 
-public class RandomFinder extends Thread {
+@RequiredArgsConstructor
+public abstract class PathFinder extends Thread {
 
-    private static final int INIT_POSITION_X = 0;
-    private static final int INIT_POSITION_Y = 0;
-    private final Random random = new Random();
+    protected final Cell[][] cells;
 
-    private final Cell[][] cells;
-    @Getter
-    private Cell currentCell;
-
-    public RandomFinder(Cell[][] cells) {
-        this.cells = cells;
-        currentCell = cells[INIT_POSITION_X][INIT_POSITION_Y];
-        currentCell.setCurrent(true);
-    }
-
-    @Override
-    public void run() {
-        while (!(currentCell.getX() == GRID_WIDTH - 1 && currentCell.getY() == GRID_HEIGHT - 1)) {
-            Cell randomNeighbour = getRandomNeighbour(getNeighbours(currentCell));
-            currentCell.setCurrent(false);
-            currentCell = randomNeighbour;
-            currentCell.setCurrent(true);
-            sleep();
-
-        }
-    }
-
-    private void sleep() {
+    protected void sleep() {
         try {
             sleep(SLEEP_MILLISECOND);
         } catch (InterruptedException e) {
@@ -47,12 +23,12 @@ public class RandomFinder extends Thread {
         }
     }
 
-    private List<Cell> getNeighbours(Cell cell) {
-        EnumSet<Direction> possibleDirection = EnumSet.allOf(Direction.class);
-        possibleDirection.removeAll(cell.getWalls());
+    protected List<Cell> getNeighbours(Cell cell) {
+        EnumSet<Direction> possibleDirections = EnumSet.allOf(Direction.class);
+        possibleDirections.removeAll(cell.getWalls());
 
         List<Cell> neighbours = new ArrayList<>();
-        possibleDirection.forEach(
+        possibleDirections.forEach(
                 direction -> {
                     int x = cell.getX();
                     int y = cell.getY();
@@ -82,7 +58,4 @@ public class RandomFinder extends Thread {
         return x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT;
     }
 
-    private Cell getRandomNeighbour(List<Cell> neighbours) {
-        return neighbours.get(random.nextInt(neighbours.size()));
-    }
 }
