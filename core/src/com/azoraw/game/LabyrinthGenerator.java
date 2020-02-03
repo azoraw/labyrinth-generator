@@ -1,10 +1,10 @@
 package com.azoraw.game;
 
 import com.azoraw.game.finder.AStarAlg;
-import com.azoraw.game.finder.RandomAlg;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -16,23 +16,20 @@ public class LabyrinthGenerator extends ApplicationAdapter {
     static final int CELL_HEIGHT = 10;
     public static final int GRID_WIDTH = 40;
     public static final int GRID_HEIGHT = 40;
-    public static final long SLEEP_MILLISECOND = 50;
+    public static final long SLEEP_MILLISECOND = 10;
 
     private Map<Direction, Texture> wallTextures;
     private Map<Color, Texture> backgroundTextures;
     private Cell[][] cells;
     private SpriteBatch batch;
-    RandomAlg randomAlg;
     AStarAlg aStarAlg;
 
     @Override
     public void create() {
         createTextures();
         createBacktracker();
-        batch = new SpriteBatch();
+        createBatch();
         drawGrid();
-        randomAlg = new RandomAlg(cells);
-        //randomFinder.start();
         aStarAlg = new AStarAlg(cells);
         aStarAlg.start();
     }
@@ -41,15 +38,21 @@ public class LabyrinthGenerator extends ApplicationAdapter {
     public void render() {
         clearScreen();
         drawGrid();
-        drawRandomFinder();
+        drawFinder();
     }
 
-    private void drawRandomFinder() {
+    private void createBatch() {
+        batch = new SpriteBatch();
+        OrthographicCamera camera = new OrthographicCamera(GRID_WIDTH * CELL_WIDTH, GRID_HEIGHT * CELL_HEIGHT);
+        camera.translate((float) GRID_WIDTH * CELL_WIDTH / 2, (float) GRID_HEIGHT * CELL_HEIGHT / 2);
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
+    }
+
+    private void drawFinder() {
         Cell currentCell = aStarAlg.getCurrentCell();
-        //Cell currentCell = randomFinder.getCurrentCell();
         batch.begin();
         batch.draw(backgroundTextures.get(Color.WHITE), currentCell.getX() * CELL_WIDTH, (GRID_HEIGHT - currentCell.getY() - 1) * CELL_HEIGHT);
-
         batch.end();
     }
 
