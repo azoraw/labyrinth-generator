@@ -5,7 +5,6 @@ import com.azoraw.game.Direction;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 
 import static com.azoraw.game.LabyrinthGenerator.*;
@@ -24,33 +23,31 @@ public abstract class PathFinder extends Thread {
     }
 
     protected List<Cell> getNeighbours(Cell cell) {
-        EnumSet<Direction> possibleDirections = EnumSet.allOf(Direction.class);
-        possibleDirections.removeAll(cell.getWalls());
-
         List<Cell> neighbours = new ArrayList<>();
-        possibleDirections.forEach(
-                direction -> {
-                    int x = cell.getX();
-                    int y = cell.getY();
-                    switch (direction) {
-                        case UP:
-                            y--;
-                            break;
-                        case RIGHT:
-                            x++;
-                            break;
-                        case DOWN:
-                            y++;
-                            break;
-                        case LEFT:
-                            x--;
-                            break;
-                    }
-                    if (isInsideGrid(x, y)) {
-                        neighbours.add(cells[x][y]);
-                    }
-                }
-        );
+        Direction.getAllReducedBy(cell.getWalls())
+                .forEach(
+                        direction -> {
+                            int x = cell.getX();
+                            int y = cell.getY();
+                            switch (direction) {
+                                case UP:
+                                    y--;
+                                    break;
+                                case RIGHT:
+                                    x++;
+                                    break;
+                                case DOWN:
+                                    y++;
+                                    break;
+                                case LEFT:
+                                    x--;
+                                    break;
+                            }
+                            if (isInsideGrid(x, y)) {
+                                neighbours.add(cells[x][y]);
+                            }
+                        }
+                );
         return neighbours;
     }
 
