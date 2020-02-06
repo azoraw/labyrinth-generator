@@ -1,6 +1,5 @@
 package com.azoraw.game;
 
-import com.azoraw.game.finder.AStarAlg;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -22,7 +21,6 @@ public class LabyrinthGenerator extends ApplicationAdapter {
     private Map<Color, Texture> backgroundTextures;
     private Cell[][] cells;
     private SpriteBatch batch;
-    AStarAlg aStarAlg;
 
     @Override
     public void create() {
@@ -30,15 +28,12 @@ public class LabyrinthGenerator extends ApplicationAdapter {
         createBacktracker();
         createBatch();
         drawGrid();
-        aStarAlg = new AStarAlg(cells);
-        aStarAlg.start();
     }
 
     @Override
     public void render() {
         clearScreen();
         drawGrid();
-        drawFinder();
     }
 
     private void createBatch() {
@@ -47,13 +42,6 @@ public class LabyrinthGenerator extends ApplicationAdapter {
         camera.translate((float) GRID_WIDTH * CELL_WIDTH / 2, (float) GRID_HEIGHT * CELL_HEIGHT / 2);
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-    }
-
-    private void drawFinder() {
-        Cell currentCell = aStarAlg.getCurrentCell();
-        batch.begin();
-        batch.draw(backgroundTextures.get(Color.WHITE), currentCell.getX() * CELL_WIDTH, (GRID_HEIGHT - currentCell.getY() - 1) * CELL_HEIGHT);
-        batch.end();
     }
 
     private void createBacktracker() {
